@@ -1,0 +1,37 @@
+﻿@using MudBlazorDialogIssue.Models
+@inject IDialogService DialogService
+
+<MudContainer Class="d-flex flex-row-reverse">
+    <MudButton Class="ma-4 pl-4 pr-4 object-right"
+               OnClick="Test"
+               Variant="Variant.Outlined"
+               EndIcon="@Icons.Filled.PersonAdd"
+               Color="Color.Secondary"
+               Style="text-transform:none">
+        Test
+    </MudButton>
+</MudContainer>
+
+
+@code {
+    List<Company> Companies = new List<Company>()
+    {
+        new Company() { Name = "Audi" },
+        new Company() { Name = "BMW" },
+        new Company() { Name = "Chevrolet" },
+        new Company() { Name = "Ferrari" },
+        new Company() { Name = "Porsche" },
+        new Company() { Name = "Renault" }
+    };
+    async Task Test()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var parameters = new DialogParameters { ["Companies"] = Companies };
+
+        var result = await DialogService.Show<TestDialog>("", parameters, options).Result;
+        if (!result.Cancelled && result.Data != null && !string.IsNullOrEmpty(result.Data.ToString()))
+        {
+
+        }
+    }
+}

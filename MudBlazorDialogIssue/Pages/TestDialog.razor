@@ -1,0 +1,37 @@
+﻿@using MudBlazorDialogIssue.Models
+<MudDialog>
+    <DialogContent>
+        <MudForm>
+            <MudTextField T="string" Label="User full name" Required="true" RequiredError="User name is required!" />
+            <MudTextField T="string" Label="Password" HelperText="Choose a strong password"
+                          InputType="InputType.Password"
+                          Required="true"
+                          RequiredError="Password is required!" />
+
+            <div class="d-flex">
+                <MudSelect AnchorOrigin="Origin.TopCenter" Dense="true" Required=true T="Company" Label="Company" Variant="Variant.Outlined">
+                    @foreach (Company comp in Companies)
+                    {
+                        <MudSelectItem Value="@comp" z>@comp.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </div>
+            <div class="d-flex align-center justify-space-between">
+                <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+            </div>
+        </MudForm>
+=
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public List<Company> Companies { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(Companies.Count.ToString()));
+    void Cancel() => MudDialog.Cancel();
+}
